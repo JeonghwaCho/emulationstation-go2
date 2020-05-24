@@ -109,9 +109,9 @@ namespace Renderer
 		
 		go2_display_t* display = getDisplay();
 
-		titlebarSurface = go2_surface_create(display, 480, 16, DRM_FORMAT_RGB565);
+		titlebarSurface = go2_surface_create(display, 854, 16, DRM_FORMAT_RGB565);
 
-		context = go2_context_create(display, 480, 320, &attr);
+		context = go2_context_create(display, 854, 480, &attr);
 		go2_context_make_current(context);
 
 		presenter = go2_presenter_create(display, DRM_FORMAT_RGB565, 0xff080808);
@@ -331,7 +331,7 @@ namespace Renderer
 				}
 				
 				src += (batteryIndex * 16 * src_stride);
-				dst += (480 - 32) * sizeof(short);
+				dst += (854 - 32) * sizeof(short);
 
 				for (int y = 0; y < 16; ++y)
 				{
@@ -398,7 +398,7 @@ namespace Renderer
 				uint8_t* dst = (uint8_t*)go2_surface_map(titlebarSurface);
 				int dst_stride = go2_surface_stride_get(titlebarSurface);
 
-				dst += ((480 / 2) - (odroid_image.width / 2)) * sizeof(short);
+				dst += ((854 / 2) - (odroid_image.width / 2)) * sizeof(short);
 
 				for (int y = 0; y < 16; ++y)
 				{
@@ -413,8 +413,8 @@ namespace Renderer
 			go2_context_swap_buffers(context);
 			go2_surface_t* surface = go2_context_surface_lock(context);
 
-			go2_surface_blit(titlebarSurface, 0, 0, 480, 16,
-							 surface, 0, 0, 480, 16,
+			go2_surface_blit(titlebarSurface, 0, 0, 854, 16,
+							 surface, 0, 0, 854, 16,
 							 GO2_ROTATION_DEGREES_0);
 
 			if (g_screenshot_requested)
@@ -450,8 +450,8 @@ namespace Renderer
 
 			go2_presenter_post(presenter,
 						surface,
-						0, 0, 480, 320,
-						0, 0, 320, 480,
+						0, 0, 854, 480,
+						0, 0, 480, 854,
 						GO2_ROTATION_DEGREES_270);
 			go2_context_surface_unlock(context, surface);
 		}
